@@ -42,12 +42,17 @@ std::vector<Vertex> Chunk::GeneratePyramid()
 {
 	std::vector<Vertex> output;
 	const int halfCHUNKSIZE = CHUNKSIZE / 2; // 5
-	for (int height = -halfCHUNKSIZE; height <= 0; height++) {
+	for (int height = 0; height <= halfCHUNKSIZE; height++) {
+		// we want the base of the pyramid at height = 0. With that in mind
+		// and knowing the max height of the pyramid we can simply accomplish
+		// that by subtracting the maxHeight  possible by height. Sort of like
+		// an inverse relationship
+		const int length = halfCHUNKSIZE - height;
 		for (int i = -halfCHUNKSIZE; i <= halfCHUNKSIZE; i++) {
 			for (int k = -halfCHUNKSIZE; k <= halfCHUNKSIZE; k++) {
 				// generating cube; as you go from height = -5 to 0, you are 
-				// similarly generating a flat square of length = height
-				if (abs(i) <= abs(height) && abs(k) <= abs(height))	{
+				// similarly generating a flat square of specified length
+				if (abs(i) <= abs(length) && abs(k) <= abs(length))	{
 					std::vector<Vertex> updatedCubeData = GenerateUpdatedCubeData(i, height , k);
 					output.insert(output.end(), updatedCubeData.begin(), updatedCubeData.end());
 				}
