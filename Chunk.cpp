@@ -12,12 +12,8 @@ std::vector<Vertex> Chunk::GenerateCube()
 	for (int i = -halfCHUNKSIZE; i < halfCHUNKSIZE; i++){
 		for (int j = -halfCHUNKSIZE; j < halfCHUNKSIZE; j++){
 			for (int k = -halfCHUNKSIZE; k < halfCHUNKSIZE; k++){
-				for (int z = 0; z < cubeData.size(); z++)
-				{
-					glm::vec3 pos = cubeData[z].Position;  // extracting the data
-					Vertex v(glm::vec3(pos.x + i, pos.y + j, pos.z + k)); // changing the data
-					output.push_back(v);   // adding data to output 
-				}
+				std::vector<Vertex> updatedCubeData = GenerateUpdatedCubeData(i, j, k);
+				output.insert(output.end(), updatedCubeData.begin(), updatedCubeData.end());
 			}
 		}
 	}
@@ -31,17 +27,45 @@ std::vector<Vertex> Chunk::GenerateSphere()
 	for (int i = -halfCHUNKSIZE; i < halfCHUNKSIZE; i++){
 		for (int j = -halfCHUNKSIZE; j < halfCHUNKSIZE; j++){
 			for (int k = -halfCHUNKSIZE; k < halfCHUNKSIZE; k++) {
-				for (int k = -halfCHUNKSIZE; k < halfCHUNKSIZE; k++) {
-					for (int z = 0; z < cubeData.size(); z++) {
-						glm::vec3 pos = cubeData[z].Position;
-						if (pow(pos.x + i, 2) + pow(pos.y + j, 2) + pow(pos.z + k, 2) <= pow(halfCHUNKSIZE, 2)) {
-							Vertex v(glm::vec3(pos.x + i, pos.y + j, pos.z + k));
-							output.push_back(v);
-						}
-					}
+				// generating cube
+				if (pow(i, 2) + pow(j, 2) + pow(k, 2) <= pow(halfCHUNKSIZE, 2)){
+					std::vector<Vertex> updatedCubeData = GenerateUpdatedCubeData(i, j, k);
+					output.insert(output.end(), updatedCubeData.begin(), updatedCubeData.end());
 				}
 			}
 		}
 	}
 	return output;
 }
+
+std::vector<Vertex> Chunk::GeneratePyramid()
+{
+	std::vector<Vertex> output;
+	const int halfCHUNKSIZE = CHUNKSIZE / 2; // 5
+	for (int height = 0; height != halfCHUNKSIZE; height++) {
+		for (int i = -halfCHUNKSIZE; i <= halfCHUNKSIZE; i++) {
+			for (int k = -halfCHUNKSIZE; k <= halfCHUNKSIZE; k++) {
+				// generating cube
+				if (abs(i) <= height && abs(k) <= height)	{
+					std::vector<Vertex> updatedCubeData = GenerateUpdatedCubeData(i, height, k);
+					output.insert(output.end(), updatedCubeData.begin(), updatedCubeData.end());
+
+				}
+			}
+		}
+	}
+	return output;
+}
+
+// why does variable have to be i, j, k and not x, y, z. There is a bug involved
+std::vector<Vertex> Chunk::GenerateUpdatedCubeData(int i, int j, int k) {
+	std::vector<Vertex> updatedCube;
+	for (int z = 0; z < cubeData.size(); z++) {
+		const glm::vec3 pos = cubeData[z].Position;
+		Vertex v(glm::vec3(pos.x + i, pos.y + j, pos.z + k));
+		updatedCube.push_back(v);
+	}
+	return updatedCube;
+}
+
+

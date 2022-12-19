@@ -24,7 +24,7 @@
 */
 
 
-#define CHUNKSIZE 6
+#define CHUNKSIZE 10
 
 
 glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 10.0f);
@@ -88,9 +88,9 @@ int main() {
 	Chunk chunk(CHUNKSIZE);
 
 	// defining the buffer that will send data and how to interpret it to the GPU
-	Mesh mesh(chunk.GenerateSphere());
+	Mesh mesh(chunk.GeneratePyramid());
 
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
 	while (!glfwWindowShouldClose(window)) {

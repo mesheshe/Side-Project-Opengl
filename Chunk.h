@@ -54,10 +54,13 @@ private:
 		glm::vec3(-0.5f,  0.5f,  0.5f),
 		glm::vec3(-0.5f,  0.5f, -0.5f)
 };
+	// abstract this into a class called cube
+	std::vector<Vertex> GenerateUpdatedCubeData(int x, int y, int z);
 public:
 	Chunk(int chunksize);
 	std::vector<Vertex> GenerateCube();
 	std::vector<Vertex> GenerateSphere();
+	std::vector<Vertex> GeneratePyramid();
 	
 };
 
