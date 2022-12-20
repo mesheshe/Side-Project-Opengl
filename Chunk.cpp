@@ -52,7 +52,8 @@ std::vector<Vertex> Chunk::GeneratePyramid()
 			for (int k = -halfCHUNKSIZE; k <= halfCHUNKSIZE; k++) {
 				// generating cube; as you go from height = -5 to 0, you are 
 				// similarly generating a flat square of specified length
-				if (abs(i) <= abs(length) && abs(k) <= abs(length))	{
+				// here the abs(i) == abs(length and ab(k) == abs(length) ensures that we are only considering the edge
+				if ((abs(i) == abs(length) && abs(k) <= abs(length)) || (abs(k) == abs(length) && abs(i) <= abs(length)))	{
 					std::vector<Vertex> updatedCubeData = GenerateUpdatedCubeData(i, height , k);
 					output.insert(output.end(), updatedCubeData.begin(), updatedCubeData.end());
 				}
@@ -66,7 +67,7 @@ std::vector<Vertex> Chunk::GenerateUpdatedCubeData(int x, int y, int z) {
 	std::vector<Vertex> updatedCube;
 	for (int point = 0; point < cubeData.size(); point++) {
 		const glm::vec3 pos = cubeData[point].Position;
-		Vertex v(glm::vec3(pos.x + x, pos.y + y, pos.z + z));
+		Vertex v(glm::vec3(pos.x + x, pos.y + y, pos.z + z), cubeData[point].Texture);
 		updatedCube.push_back(v);
 	}
 	return updatedCube;

@@ -11,6 +11,7 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include "Chunk.h"
+#include "Texture.h"
 /* Next order of tasks
 *	Mouse control just like in any FP game // Done
 *	Generate chunks -> create floor -> collision detection
@@ -47,8 +48,8 @@ std::vector<Vertex> returnVectorFromFloatArrayContaingOnlyPositionVec(const floa
 
 int main() {
 	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 
@@ -83,14 +84,21 @@ int main() {
 
 	// Creating Shader Program
 	Shader shader("shader");
-
+	
 	//Chunk 
 	Chunk chunk(CHUNKSIZE);
 
 	// defining the buffer that will send data and how to interpret it to the GPU
 	Mesh mesh(chunk.GeneratePyramid());
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	// Texture
+	Texture tex("..\\..\\..\\Downloads\\wall.jpg");
+	
+	shader.use();
+	shader.setInteger("aSampler", 0);
+
+
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
 	while (!glfwWindowShouldClose(window)) {
@@ -105,6 +113,7 @@ int main() {
 		// update
 		glClearColor(0.2f, 0.93f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		tex.Bind();
 
 		shader.use();
 
@@ -211,19 +220,4 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	glm::vec3 cameraRight = glm::normalize(glm::cross(cameraFront, worldUp));
 	cameraUp = glm::normalize(glm::cross(cameraRight, cameraFront));
 
-}
-
-// assumes the data is just positions and nothing else
-std::vector<Vertex> returnVectorFromFloatArrayContaingOnlyPositionVec(const float data[], int length)
-{
-	std::vector<Vertex> output;
-
-	for (int i = 0; i < length; i = i + 3)
-	{
-		glm::vec3 pos(data[i], data[i + 1], data[i + 2]);
-		Vertex v(pos);
-		output.push_back(pos);
-	}
-
-	return output;
 }

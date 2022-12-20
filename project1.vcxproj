@@ -137,16 +137,24 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.fs" />
     <None Include="shader.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\Downloads\awesomeface.png" />
+    <Image Include="..\..\..\Downloads\container.jpg" />
+    <Image Include="..\..\..\Downloads\wall.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
