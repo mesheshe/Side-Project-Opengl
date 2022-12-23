@@ -40,6 +40,7 @@ float yaw = -90.0f;
 float pitch = 0.0f;
 bool firstMouse = true;
 
+bool outline = false;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -89,16 +90,17 @@ int main() {
 	Chunk chunk(CHUNKSIZE);
 
 	// defining the buffer that will send data and how to interpret it to the GPU
-	Mesh mesh(chunk.GeneratePyramid());
+	Mesh mesh(chunk.GenerateCube());
 
 	// Texture
-	Texture tex("..\\..\\..\\Downloads\\wall.jpg");
+	Texture tex("..\\..\\..\\Downloads\\atlas.png");
 	
 	shader.use();
 	shader.setInteger("aSampler", 0);
 
-
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	// this is how to use the atlas 
+	shader.setFloat("numOfRows", 16.0f);
+	shader.setVec2("offset", glm::vec2(2.0f/16.0f, 0.0f /16.0f));
 
 
 	while (!glfwWindowShouldClose(window)) {
@@ -108,6 +110,11 @@ int main() {
 		lastFrame = currFrame;
 
 		processInput(window);
+
+		if (outline)
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		else
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		std::cout << glm::to_string(cameraPosition) << " " << glm::to_string(cameraFront) << " " << glm::to_string(cameraUp) << " Pitch: " << pitch << " Yaw: " << yaw << std::endl;
 		// update
@@ -165,6 +172,8 @@ void processInput(GLFWwindow* window)
 		cameraPosition += cameraSpeed * cameraUp;
 	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
 		cameraPosition -= cameraSpeed * cameraUp;
+	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
+		outline = !outline;		
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)

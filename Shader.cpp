@@ -1,6 +1,7 @@
+#pragma once
 #include "Shader.h"
 
-#pragma once
+
 void Shader::checkError(GLuint shader, GLint flag, bool isProgram, const std::string& errorMsg)
 {
 	int success;
@@ -111,4 +112,16 @@ void Shader::setMat4(const std::string& name, const glm::mat4 &value) const
 void Shader::setInteger(const std::string& name, const int value) const {
 	int location = glGetUniformLocation(ID, name.c_str());
 	glUniform1i(location, value);
+}
+
+void Shader::setFloat(const std::string& name, const float value) const
+{
+	int location = glGetUniformLocation(ID, name.c_str());
+	glUniform1f(location, value);
+}
+
+void Shader::setVec2(const std::string& name, const glm::vec2 &value) const
+{
+	int location = glGetUniformLocation(ID, name.c_str());
+	glUniform2fv(location, 1 , &value[0]);
 }

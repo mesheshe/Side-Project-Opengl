@@ -21,9 +21,17 @@ Texture::Texture(std::string path) {
 
 }
 
+Texture::Texture()
+{
+	filePath = "";
+	width = height = numChannels = -1;
+	texID = 0;
+	imageData = NULL;
+}
+
 void Texture::loadImage() {
 	
-	stbi_set_flip_vertically_on_load(true);
+	stbi_set_flip_vertically_on_load(false);
 
 	imageData = stbi_load(filePath.c_str(), &width, &height, &numChannels, 4);
 
@@ -44,4 +52,14 @@ void Texture::Bind(unsigned int slot) {
 
 void Texture::Unbind() {
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+int Texture::getHeight()
+{
+	return height;
+}
+
+int Texture::getWidth()
+{
+	return width;
 }

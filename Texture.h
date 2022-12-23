@@ -2,8 +2,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <string>
-#include <iostream>
 #include <stb_image/stb_image.h>
+#include <iostream>
+
 class Texture
 {
 private:
@@ -16,8 +17,11 @@ private:
 	void loadImage();
 public:
 	Texture(std::string path);
+	Texture();
 	~Texture();
 	void Bind(unsigned int slot = 0);
 	void Unbind();
+	int getHeight();
+	int getWidth();
 };
 
