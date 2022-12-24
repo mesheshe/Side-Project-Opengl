@@ -1,7 +1,27 @@
 #include "AtlasTexture.h"
+#include <iostream>
 
-AtlasTexture::AtlasTexture(std::string filePath, int numOfRows)
-{
-	Texture(filePath.c_str());
+// default values 
+float AtlasTexture::m_NumOfRows = 1.0f;
+float AtlasTexture::m_NumOfColumns = 1.0f;
+
+AtlasTexture::AtlasTexture(std::string filePath, float numOfRows, float numOfColumns) : Texture(filePath.c_str()) {
 	m_NumOfRows = numOfRows;
+	m_NumOfColumns = numOfColumns;
 }
+
+glm::vec2 AtlasTexture::GetCorrectedPixelCoordGivenIndexAndOldCoord(glm::vec2 coord, glm::vec2 index)
+{
+	float x = index.x, y = m_NumOfColumns - 1 - index.y;
+	glm::vec2 offset = glm::vec2(x / m_NumOfRows, y / m_NumOfColumns);
+	glm::vec2 textureCoord = glm::vec2(coord.s/ m_NumOfRows, coord.t/ m_NumOfColumns) + offset;
+	std::cout << textureCoord.x<< " " << textureCoord.y << " " << m_NumOfRows << " " << m_NumOfColumns<< std::endl;
+	return textureCoord;
+}
+
+void AtlasTexture::Bind()
+{
+	Texture::Bind();
+}
+
+

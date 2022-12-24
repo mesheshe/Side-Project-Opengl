@@ -18,7 +18,7 @@ public:
 	void changeBlockType(BlockType blockType);
 	Block();
 private:
-	static const std::vector<Vertex> cubeData;
+	
 	BlockType blocktype;
 	bool isVisible;
 };

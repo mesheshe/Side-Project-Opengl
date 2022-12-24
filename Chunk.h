@@ -2,6 +2,7 @@
 #include <vector>
 #include "Vertex.h"
 #include "Block.h"
+#include "AtlasTexture.h"
 
 class Chunk
 {
@@ -14,6 +15,9 @@ private:
 	int CHUNKSIZE;
 	Block *** blockList; 
 	// abstract this into a class called cube
+	
+	std::vector<Vertex> GenerateUpdatedCubeData(int x, int y, int z);
+	static const std::vector<Vertex> cubeData;
 	
 public:
 	Chunk(int chunksize);

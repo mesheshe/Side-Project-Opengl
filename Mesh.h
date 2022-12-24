@@ -4,11 +4,13 @@
 #include "Shader.h"
 #include <GLFW/glfw3.h>
 #include "Vertex.h"
+ 
 
 class Mesh
 {
 private:
 	GLuint VAO, VBO;
+ 
 public:
 	std::vector<Vertex> vertices;
 

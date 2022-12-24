@@ -31,7 +31,7 @@ Texture::Texture()
 
 void Texture::loadImage() {
 	
-	stbi_set_flip_vertically_on_load(false);
+	stbi_set_flip_vertically_on_load(true);
 
 	imageData = stbi_load(filePath.c_str(), &width, &height, &numChannels, 4);
 

@@ -25,7 +25,7 @@ Chunk::~Chunk() {
 std::vector<Vertex> Chunk::GenerateCube()
 {
 	std::vector<Vertex> output;
-	std::vector<Vertex> updatedCubeData = Block::GenerateUpdatedCubeData(0, 0, 0);
+	std::vector<Vertex> updatedCubeData = Chunk::GenerateUpdatedCubeData(0, 0, 0);
 	output.insert(output.end(), updatedCubeData.begin(), updatedCubeData.end());
 	return output;
 	/*
@@ -33,7 +33,7 @@ std::vector<Vertex> Chunk::GenerateCube()
 	for (int i = -halfCHUNKSIZE; i < halfCHUNKSIZE; i++){
 		for (int j = -halfCHUNKSIZE; j < halfCHUNKSIZE; j++){
 			for (int k = -halfCHUNKSIZE; k < halfCHUNKSIZE; k++){
-				std::vector<Vertex> updatedCubeData = Block::GenerateUpdatedCubeData(i, j, k);
+				std::vector<Vertex> updatedCubeData = Chunk::GenerateUpdatedCubeData(i, j, k);
 				output.insert(output.end(), updatedCubeData.begin(), updatedCubeData.end());
 			}
 		}
@@ -51,7 +51,7 @@ std::vector<Vertex> Chunk::GenerateSphere()
 			for (int k = -halfCHUNKSIZE; k < halfCHUNKSIZE; k++) {
 				// generating cube, squared therefore only comparing the actual values
 				if (pow(i, 2) + pow(j, 2) + pow(k, 2) <= pow(halfCHUNKSIZE, 2)){
-					std::vector<Vertex> updatedCubeData = Block::GenerateUpdatedCubeData(i, j, k);
+					std::vector<Vertex> updatedCubeData = Chunk::GenerateUpdatedCubeData(i, j, k);
 					output.insert(output.end(), updatedCubeData.begin(), updatedCubeData.end());
 				}
 			}
@@ -76,7 +76,7 @@ std::vector<Vertex> Chunk::GeneratePyramid()
 				// similarly generating a flat square of specified length
 				// here the abs(i) == abs(length and ab(k) == abs(length) ensures that we are only considering the edge
 				if ((abs(i) == abs(length) && abs(k) <= abs(length)) || (abs(k) == abs(length) && abs(i) <= abs(length)))	{
-					std::vector<Vertex> updatedCubeData = Block::GenerateUpdatedCubeData(i, height , k);
+					std::vector<Vertex> updatedCubeData = Chunk::GenerateUpdatedCubeData(i, height , k);
 					output.insert(output.end(), updatedCubeData.begin(), updatedCubeData.end());
 				}
 			}
@@ -98,3 +98,58 @@ std::vector<Vertex> Chunk::GenerateFloor()
 	I want to create a chunk manager where it will basically manage everything that happens inside the chunk. This chunk manager will be an internal class used mainly
 	by the Chunk Class. One of the methods that will be available is specifiying whether something should be visible or not.
 */
+
+const std::vector<Vertex> Chunk::cubeData = {
+	// back
+	Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 0.0f)),
+	Vertex(glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(1.0f, 0.0f)),
+	Vertex(glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)),
+	Vertex(glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)),
+	Vertex(glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)),
+	Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 0.0f)),
+	// front
+	Vertex(glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)),
+	Vertex(glm::vec3(0.5f, -0.5f,  0.5f),  glm::vec2(1.0f, 0.0f)),
+	Vertex(glm::vec3(0.5f,  0.5f,  0.5f),  glm::vec2(1.0f, 1.0f)),
+	Vertex(glm::vec3(0.5f,  0.5f,  0.5f),  glm::vec2(1.0f, 1.0f)),
+	Vertex(glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(0.0f, 1.0f)),
+	Vertex(glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)),
+	// left
+	Vertex(glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)),
+	Vertex(glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)),
+	Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)),
+	Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)),
+	Vertex(glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)),
+	Vertex(glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)),
+	// right
+	Vertex(glm::vec3(0.5f,  0.5f,  0.5f),  glm::vec2(1.0f, 0.0f)),
+	Vertex(glm::vec3(0.5f,  0.5f, -0.5f),  glm::vec2(1.0f, 1.0f)),
+	Vertex(glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec2(0.0f, 1.0f)),
+	Vertex(glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec2(0.0f, 1.0f)),
+	Vertex(glm::vec3(0.5f, -0.5f,  0.5f),  glm::vec2(0.0f, 0.0f)),
+	Vertex(glm::vec3(0.5f,  0.5f,  0.5f),  glm::vec2(1.0f, 0.0f)),
+	// bottom
+	Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)),
+	Vertex(glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(1.0f, 1.0f)),
+	Vertex(glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)),
+	Vertex(glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)),
+	Vertex(glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)),
+	Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)),
+	// top
+	Vertex(glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)),
+	Vertex(glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)),
+	Vertex(glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)),
+	Vertex(glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)),
+	Vertex(glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(0.0f, 0.0f)),
+	Vertex(glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f))
+};
+
+std::vector<Vertex> Chunk::GenerateUpdatedCubeData(int x, int y, int z) {
+	std::vector<Vertex> updatedCube;
+	for (int point = 0; point < cubeData.size(); point++) {
+		const glm::vec3 pos = cubeData[point].Position;
+		Vertex v(glm::vec3(pos.x + x, pos.y + y, pos.z + z), AtlasTexture::GetCorrectedPixelCoordGivenIndexAndOldCoord(cubeData[point].Texture, glm::vec2(0.0f, 0.0f)));
+		updatedCube.push_back(v);
+	}
+	return updatedCube;
+}

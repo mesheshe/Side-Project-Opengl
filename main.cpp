@@ -11,7 +11,7 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include "Chunk.h"
-#include "Texture.h"
+#include "AtlasTexture.h"
 /* Next order of tasks
 *	Mouse control just like in any FP game // Done
 *	Generate chunks -> create floor -> collision detection
@@ -89,18 +89,15 @@ int main() {
 	//Chunk 
 	Chunk chunk(CHUNKSIZE);
 
+	// Texture
+	AtlasTexture tex("..\\..\\..\\\Downloads\\voxel-pack\\Spritesheets\\spritesheet_tiles.png", 9.0f, 10.0f);
 	// defining the buffer that will send data and how to interpret it to the GPU
 	Mesh mesh(chunk.GenerateCube());
-
-	// Texture
-	Texture tex("..\\..\\..\\Downloads\\atlas.png");
 	
 	shader.use();
 	shader.setInteger("aSampler", 0);
 
 	// this is how to use the atlas 
-	shader.setFloat("numOfRows", 16.0f);
-	shader.setVec2("offset", glm::vec2(2.0f/16.0f, 0.0f /16.0f));
 
 
 	while (!glfwWindowShouldClose(window)) {
@@ -120,6 +117,7 @@ int main() {
 		// update
 		glClearColor(0.2f, 0.93f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		tex.Bind();
 
 		shader.use();
@@ -218,7 +216,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	if (yaw >= 360.0f || yaw < -360.0f)
 		yaw = 0;
 
-	glm::vec3 direction;
+	glm::vec3 direction = glm::vec3(1);
 
 	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
 	direction.y = sin(glm::radians(pitch));
@@ -230,3 +228,4 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	cameraUp = glm::normalize(glm::cross(cameraRight, cameraFront));
 
 }
+

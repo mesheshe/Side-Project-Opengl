@@ -28,6 +28,8 @@ void Mesh::SetUpMesh()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	// unbinding VAO
 	glBindVertexArray(0);
+
+	
 }
 
 Mesh::Mesh(std::vector<Vertex> vertices)
