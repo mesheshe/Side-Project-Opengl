@@ -88,18 +88,15 @@ int main() {
 	
 	//Chunk 
 	Chunk chunk(CHUNKSIZE);
-
+	
 	// Texture
 	AtlasTexture tex("..\\..\\..\\\Downloads\\voxel-pack\\Spritesheets\\spritesheet_tiles.png", 9.0f, 10.0f);
 	// defining the buffer that will send data and how to interpret it to the GPU
-	Mesh mesh(chunk.GenerateCube());
+	Mesh mesh(chunk.CreateChunkMesh());
 	
 	shader.use();
 	shader.setInteger("aSampler", 0);
-
-	// this is how to use the atlas 
-
-
+	
 	while (!glfwWindowShouldClose(window)) {
 		// input
 		const float currFrame = static_cast<float>(glfwGetTime());

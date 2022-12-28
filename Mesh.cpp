@@ -2,9 +2,12 @@
 
 void Mesh::Draw(Shader& s)
 {
-	glBindVertexArray(VAO);
-	glDrawArrays(GL_TRIANGLES, 0, vertices.size() * sizeof(Vertex));
-	glBindVertexArray(0);
+	if (m_Draw)
+	{
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_TRIANGLES, 0, vertices.size() * sizeof(Vertex));
+		glBindVertexArray(0);
+	}
 }
 
 void Mesh::SetUpMesh()
@@ -36,7 +39,10 @@ Mesh::Mesh(std::vector<Vertex> vertices)
 {
 	// maybe include indicies
 	this->vertices = vertices;
-	SetUpMesh();
+	if (vertices.size() > 0)
+		SetUpMesh();
+	else
+		m_Draw = false;
 }
 
 Mesh::~Mesh()

@@ -10,7 +10,7 @@ class Mesh
 {
 private:
 	GLuint VAO, VBO;
- 
+	bool m_Draw = true;
 public:
 	std::vector<Vertex> vertices;
 

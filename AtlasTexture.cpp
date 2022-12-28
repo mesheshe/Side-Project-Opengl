@@ -1,5 +1,4 @@
 #include "AtlasTexture.h"
-#include <iostream>
 
 // default values 
 float AtlasTexture::m_NumOfRows = 1.0f;
@@ -15,7 +14,6 @@ glm::vec2 AtlasTexture::GetCorrectedPixelCoordGivenIndexAndOldCoord(glm::vec2 co
 	float x = index.x, y = m_NumOfColumns - 1 - index.y;
 	glm::vec2 offset = glm::vec2(x / m_NumOfRows, y / m_NumOfColumns);
 	glm::vec2 textureCoord = glm::vec2(coord.s/ m_NumOfRows, coord.t/ m_NumOfColumns) + offset;
-	std::cout << textureCoord.x<< " " << textureCoord.y << " " << m_NumOfRows << " " << m_NumOfColumns<< std::endl;
 	return textureCoord;
 }
 

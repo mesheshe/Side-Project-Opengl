@@ -14,18 +14,19 @@ class Chunk
 private:
 	int CHUNKSIZE;
 	Block *** blockList; 
+	bool m_ChunkWorkedOn;
 	// abstract this into a class called cube
 	
-	std::vector<Vertex> GenerateUpdatedCubeData(int x, int y, int z);
+	std::vector<Vertex> GenerateUpdatedCubeData(Block b);
+	void CheckNeighborsAndSetIfFaceShouldBeVisible();
+	void GenerateChunk();
 	static const std::vector<Vertex> cubeData;
-	
 public:
 	Chunk(int chunksize);
 	~Chunk();
-	std::vector<Vertex> GenerateCube();
-	std::vector<Vertex> GenerateSphere();
-	std::vector<Vertex> GeneratePyramid();
-	std::vector<Vertex> GenerateFloor();
+	std::vector<Vertex> CreateChunkMesh();
+	void setChunkWorkedOn(bool val);
+	bool getChunkWorkedOnBoolVal();
 	
 };
 
